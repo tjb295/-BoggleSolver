@@ -31,8 +31,10 @@ class boggleSolver:
             elif board[letter] == " ":
                 continue
             
-            temp[count] = board[letter]
-            count ++
+
+            else :
+                temp[count] = board[letter]
+                count ++
             
         
         
@@ -45,4 +47,14 @@ class boggleSolver:
     def legalMoves():
 
     def examineState():
+
+
+def main():
+    solve = boggleSolver()
+    myboard = solve.loadBoard("board.txt")
+    solve.printBoard(myboard)
+    
+
+if __name__ == "__main__":
+    main()
         
