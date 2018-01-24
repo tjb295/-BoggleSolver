@@ -40,7 +40,13 @@ class boggleSolver:
         
         return self.board
 
-    def printBoard():
+    def printBoard(board):
+        for col in board:
+            for row in board[col]:
+                print board[col][row]
+                print " "
+            print"\n"
+                
 
     def possibleMoves():
 
