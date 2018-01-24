@@ -7,9 +7,36 @@ import time
 class boggleSolver:
     
     def __init__(self):
-        
+        self.board = []
+
+    #loads NxN board into matrix
     def loadBoard(boardFile):
-        return []
+        #temp array
+        temp = []
+        count = 0
+        
+        board = open(boardFile)
+        board.strip(" ")
+
+        #for loop to loop through letters, disregards white space
+        for letter in board:
+
+            #if reached new line, save that dimension within array
+            if board[letter] == '\n':
+                self.board[-1] = temp
+                temp = []
+                count = 0
+                
+            #if blank space, skip
+            elif board[letter] == " ":
+                continue
+            
+            temp[count] = board[letter]
+            count ++
+            
+        
+        
+        return self.board
 
     def printBoard():
 
