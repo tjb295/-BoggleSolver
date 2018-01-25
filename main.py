@@ -8,6 +8,7 @@ class boggleSolver:
     
     def __init__(self):
         self.board = []
+        self.n = 0
 
     #loads NxN board into matrix
     def loadBoard(self, boardFile):
@@ -25,6 +26,8 @@ class boggleSolver:
             if board[letter] == '\n':
                 self.board.append(temp)
                 temp = []
+                if self.n == 0:
+                    self.n = count
                 count = 0
                 
             #if blank space, skip
@@ -53,9 +56,32 @@ class boggleSolver:
                 
             print(printLine)
             printLine = ""
+            
+        print(self.n)
                 
+    def withinBoundsCheck(self, Position):
+        #Helper function that returns false if the positions are less than 0 or greater than or equal to the max, N
+        
+        if Position[0] < 0 or Position[0] >= self.n:
+            return False
+        
+        if position[1] < 0 or Position[1] >= self.n:
+            return False
 
-    def possibleMoves(self):
+        return True
+
+    def possibleMoves(self, currPos, board):
+        #generates all possible next positions, (x-y pairs in a list, set or whatver you decide)
+        #we could load currPos as a list of two elements, [0] always x, [1] always y
+        #first check if the currpos is within the bounds of the board
+        if not self.withinBoundsCheck(currPos):
+            print("Error, current position is not within bounds\n")
+            return -1
+        
+        #if within the bounds then move on
+        
+
+
         return []
 
     def legalMoves(self):
