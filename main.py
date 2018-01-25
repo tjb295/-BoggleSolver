@@ -17,14 +17,14 @@ class boggleSolver:
 
         board = open(boardFile)
         board = board.read()
+        print(board)
         board.strip(' ')
 
         #for loop to loop through letters, disregards white space
         for letter in range(len(board)):
-
             #if reached new line, save that dimension within array
             if board[letter] == '\n':
-                self.board[-1] = temp
+                self.board.append(temp)
                 temp = []
                 count = 0
                 
@@ -34,7 +34,7 @@ class boggleSolver:
             
 
             else :
-                temp[count] = board[letter]
+                temp.append(board[letter])
                 count += 1
             
         
@@ -42,14 +42,15 @@ class boggleSolver:
         return self.board
 
     def printBoard(self,board):
-        
+        printLine = ""
+
         for col in range(len(board)):
             
             for row in range(len(board[col])):
-                print(board[col][row])
-                print(" ")
+                printLine = printLine + board[col][row] + " "
                 
-            print("\n")
+            print(printLine)
+            printLine = ""
                 
 
     def possibleMoves(self):
