@@ -65,7 +65,7 @@ class boggleSolver:
         if Position[0] < 0 or Position[0] >= self.n:
             return False
         
-        if position[1] < 0 or Position[1] >= self.n:
+        if Position[1] < 0 or Position[1] >= self.n:
             return False
 
         return True
@@ -74,15 +74,47 @@ class boggleSolver:
         #generates all possible next positions, (x-y pairs in a list, set or whatver you decide)
         #we could load currPos as a list of two elements, [0] always x, [1] always y
         #first check if the currpos is within the bounds of the board
+        possMovesArr = []
+
         if not self.withinBoundsCheck(currPos):
             print("Error, current position is not within bounds\n")
             return -1
         
         #if within the bounds then move on
+        currPos[0] += 1
+        if self.withinBoundsCheck(currPos):
+            possMovesArr.append(currPos[:])
+
+        currPos[1] += 1
+        if self.withinBoundsCheck(currPos):
+            possMovesArr.append(currPos[:])
+
+        currPos[0] -= 1
+        if self.withinBoundsCheck(currPos):
+            possMovesArr.append(currPos[:])
+
+        currPos[0] -= 1
+        if self.withinBoundsCheck(currPos):
+            possMovesArr.append(currPos[:])
         
+        currPos[1] -= 1
+        if self.withinBoundsCheck(currPos):
+            possMovesArr.append(currPos[:])
+        
+        currPos[1] -= 1
+        if self.withinBoundsCheck(currPos):
+            possMovesArr.append(currPos[:])
+        
+        currPos[0] += 1
+        if self.withinBoundsCheck(currPos):
+            possMovesArr.append(currPos[:])
+        
+        currPos[0] += 1
+        if self.withinBoundsCheck(currPos):
+            possMovesArr.append(currPos[:])
+        
+        return possMovesArr
 
-
-        return []
 
     def legalMoves(self):
         return []
@@ -95,6 +127,7 @@ def main():
     solve = boggleSolver()
     myboard = solve.loadBoard('boardex')
     solve.printBoard(myboard)
+    print(solve.possibleMoves([0,0], myboard))
     
 
 if __name__ == "__main__":
