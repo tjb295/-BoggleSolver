@@ -116,8 +116,13 @@ class boggleSolver:
         return possMovesArr
 
 
-    def legalMoves(self):
-        return []
+    def legalMoves(self, possibleMoves, visited):
+        
+        for i in possibleMoves:
+            if i in visited:
+                possibleMoves.remove(i)
+
+        return possibleMoves
 
     def examineState(self):
         return []
@@ -127,7 +132,9 @@ def main():
     solve = boggleSolver()
     myboard = solve.loadBoard('boardex')
     solve.printBoard(myboard)
-    print(solve.possibleMoves([0,0], myboard))
+    possibles = solve.possibleMoves([2,2], myboard)
+    print(possibles)
+    print(solve.legalMoves(possibles, [[1,1], [3,1]]))
     
 
 if __name__ == "__main__":
