@@ -124,7 +124,15 @@ class boggleSolver:
 
         return possibleMoves
 
-    def examineState(self):
+    def examineState(self, board, currPos, path, dictionary):
+        #adds the currpos to the path and forms the word that should be created with that path
+        path.append(currPos)
+
+        #now compute the word that should be formed 
+        
+
+
+
         return []
 
 
