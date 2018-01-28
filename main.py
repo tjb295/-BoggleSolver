@@ -126,14 +126,21 @@ class boggleSolver:
 
     def examineState(self, board, currPos, path, dictionary):
         #adds the currpos to the path and forms the word that should be created with that path
+        dic = open(dictionary)
+        dic = dic.read()
+        word = ''
+
         path.append(currPos)
 
+        for i in path:
+            word += board[i[0]][i[1]]
+
         #now compute the word that should be formed 
-        
-
-
-
-        return []
+        if word in dic:
+            return word + " yes"
+        else:
+            return word + " no"
+    
 
 
 def main():
@@ -143,7 +150,7 @@ def main():
     possibles = solve.possibleMoves([2,2], myboard)
     print(possibles)
     print(solve.legalMoves(possibles, [[1,1], [3,1]]))
-    
+    print(solve.examineState(myboard, [3,1], [[3,0]], "twl06.txt"))
 
 if __name__ == "__main__":
     main()
