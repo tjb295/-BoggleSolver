@@ -57,7 +57,7 @@ class boggleSolver:
             print(printLine)
             printLine = ""
             
-        print(self.n)
+ 
                 
     def withinBoundsCheck(self, Position):
         #Helper function that returns false if the positions are less than 0 or greater than or equal to the max, N
@@ -134,7 +134,7 @@ class boggleSolver:
         path.append(currPos)
 
         for i in path:
-            word += board[i[1]][i[0]]
+            word += board[i[0]][i[1]]
 
         #now compute the word that should be formed 
         word = word.lower()
@@ -147,12 +147,39 @@ class boggleSolver:
 
 def main():
     solve = boggleSolver()
-    myboard = solve.loadBoard('boardex')
+    myboard = solve.loadBoard('fourboard3.txt')
     solve.printBoard(myboard)
-    possibles = solve.possibleMoves([2,2], myboard)
+
+    possibles = solve.possibleMoves([3,3], myboard)
+    print("Possible moves")
     print(possibles)
-    print(solve.legalMoves(possibles, [[1,1], [3,1]]))
-    print(solve.examineState(myboard, [1,2], [[1,1], [2,1]], "twl06.txt"))
+    print("\n")
+
+    possibles = solve.possibleMoves([2,1], myboard)
+    print("Possible moves")
+    print(possibles)
+    print("\n")
+
+    possibles = solve.possibleMoves([1,2], myboard)
+
+    print("Legal Moves")
+    print(solve.legalMoves(possibles, [[1,0], [2,0], [2,1], [2,2]]))
+
+    possibles = solve.possibleMoves([2,2], myboard)
+    print("Legal Moves")
+    print(solve.legalMoves(possibles, [[1,1], [1,2], [1,3], [2,3], [3,2]]))
+    print("\n")
+
+    print("Examine state")
+    print(solve.examineState(myboard, [0,3], [[1,1], [0,1], [0,2]], "twl06.txt"))
+    print("\n")
+
+    print("Examine state")
+    print(solve.examineState(myboard, [0,0], [[3,3], [2,2], [1,1]], "twl06.txt"))
+    print("\n")
+
+    print("Examine state")
+    print(solve.examineState(myboard, [3,3], [[2,2], [2,1], [2,0], [3,0], [3,1], [3,2]], "twl06.txt"))
 
 if __name__ == "__main__":
     main()
