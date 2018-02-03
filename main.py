@@ -6,9 +6,11 @@ import time
 
 class boggleSolver:
     
-    def __init__(self):
+    def __init__(self, dic):
         self.board = []
         self.n = 0
+        self.completeWords = []
+        self.dic = dic
 
     #loads NxN board into matrix
     def loadBoard(self, boardFile):
@@ -70,7 +72,7 @@ class boggleSolver:
 
         return True
 
-    def possibleMoves(self, currPos, board):
+    def possibleMoves(self, currPos):
         #generates all possible next positions, (x-y pairs in a list, set or whatver you decide)
         #we could load currPos as a list of two elements, [0] always x, [1] always y
         #first check if the currpos is within the bounds of the board
@@ -124,63 +126,55 @@ class boggleSolver:
 
         return possibleMoves
 
-    def examineState(self, board, currPos, path, dictionary):
-        #adds the currpos to the path and forms the word that should be created with that path
-        dic = open(dictionary)
-        dic = dic.read()
-        dic = dic.lower()
-        word = ''
+    def examineState(self, currPos, path, word):
 
         path.append(currPos)
 
         for i in path:
-            word += board[i[0]][i[1]]
+            word += self.board[i[0]][i[1]]
+        #compute new paths to begin search with first gaining possible moves
+        possible = self.possibleMoves(currPos)
+
+        #now compute the legal moves in those direction
+        legal = (possible, path)
 
         #now compute the word that should be formed 
         word = word.lower()
-        if word in dic:
-            return word + " yes"
+
+        if word in self.dic:
+            
+            #check to see if the word is complete and then return after appending
+            if word + "\n" in self.dic:
+                self.completeWords.append(word)
+                return
+
+            #recursive element to begin search in new path
+            for next in legal:
+                examineState(next, path, word)
         else:
-            return word + " no"
-    
+            return 
+
+
+
+
 
 
 def main():
-    solve = boggleSolver()
+    begin = time.time()
+    
+    #open dictionary for reading
+    dic = open(dictionary)
+    dic = dic.read()
+
+    #load board and begin the solution
+    solve = boggleSolver(dic)
     myboard = solve.loadBoard('fourboard3.txt')
     solve.printBoard(myboard)
 
-    possibles = solve.possibleMoves([3,3], myboard)
-    print("Possible moves")
-    print(possibles)
-    print("\n")
+    #begin with empty list 
+    myboard.examineState([0,0], [], '\n')
 
-    possibles = solve.possibleMoves([2,1], myboard)
-    print("Possible moves")
-    print(possibles)
-    print("\n")
-
-    possibles = solve.possibleMoves([1,2], myboard)
-
-    print("Legal Moves")
-    print(solve.legalMoves(possibles, [[1,0], [2,0], [2,1], [2,2]]))
-
-    possibles = solve.possibleMoves([2,2], myboard)
-    print("Legal Moves")
-    print(solve.legalMoves(possibles, [[1,1], [1,2], [1,3], [2,3], [3,2]]))
-    print("\n")
-
-    print("Examine state")
-    print(solve.examineState(myboard, [0,3], [[1,1], [0,1], [0,2]], "twl06.txt"))
-    print("\n")
-
-    print("Examine state")
-    print(solve.examineState(myboard, [0,0], [[3,3], [2,2], [1,1]], "twl06.txt"))
-    print("\n")
-
-    print("Examine state")
-    print(solve.examineState(myboard, [3,3], [[2,2], [2,1], [2,0], [3,0], [3,1], [3,2]], "twl06.txt"))
-
+    
 if __name__ == "__main__":
     main()
         
