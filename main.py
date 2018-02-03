@@ -29,7 +29,7 @@ class boggleSolver:
                 self.board.append(temp)
                 temp = []
                 if self.n == 0:
-                    self.n = count
+                    self.n = count - 1
                 count = 0
                 
             #if blank space, skip
@@ -135,8 +135,9 @@ class boggleSolver:
         #compute new paths to begin search with first gaining possible moves
         possible = self.possibleMoves(currPos)
 
+
         #now compute the legal moves in those direction
-        legal = (possible, path)
+        legal = self.legalMoves(possible, path)
 
         #now compute the word that should be formed 
         word = word.lower()
@@ -145,12 +146,13 @@ class boggleSolver:
             
             #check to see if the word is complete and then return after appending
             if word + "\n" in self.dic:
+                word.strip('\n')
                 self.completeWords.append(word)
                 return
 
             #recursive element to begin search in new path
             for next in legal:
-                examineState(next, path, word)
+                self.examineState(next, path, word)
         else:
             return 
 
@@ -163,16 +165,21 @@ def main():
     begin = time.time()
     
     #open dictionary for reading
-    dic = open(dictionary)
+    dic = open("twl06.txt")
     dic = dic.read()
 
     #load board and begin the solution
     solve = boggleSolver(dic)
-    myboard = solve.loadBoard('fourboard3.txt')
+    myboard = solve.loadBoard('boardex')
     solve.printBoard(myboard)
 
     #begin with empty list 
-    myboard.examineState([0,0], [], '\n')
+    solve.examineState([0,1], [], "\n")
+
+    end = time.time()
+    #print("Time: " + (end-begin) )
+    for i  in solve.completeWords:
+        print(i)
 
     
 if __name__ == "__main__":
