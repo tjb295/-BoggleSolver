@@ -29,7 +29,7 @@ class boggleSolver:
                 self.board.append(temp)
                 temp = []
                 if self.n == 0:
-                    self.n = count - 1
+                    self.n = count -1
                 count = 0
                 
             #if blank space, skip
@@ -64,10 +64,10 @@ class boggleSolver:
     def withinBoundsCheck(self, Position):
         #Helper function that returns false if the positions are less than 0 or greater than or equal to the max, N
         
-        if Position[0] < 0 or Position[0] >= self.n:
+        if Position[0] < 0 or Position[0] > self.n:
             return False
         
-        if Position[1] < 0 or Position[1] >= self.n:
+        if Position[1] < 0 or Position[1] > self.n:
             return False
 
         return True
@@ -119,41 +119,42 @@ class boggleSolver:
 
 
     def legalMoves(self, possibleMoves, visited):
-        
         for i in possibleMoves:
             if i in visited:
                 possibleMoves.remove(i)
 
         return possibleMoves
 
-    def examineState(self, currPos, path, word):
+    def examineState(self, currPosition, path, word):
 
-        path.append(currPos)
+        path.append(currPosition)
 
-        for i in path:
-            word += self.board[i[0]][i[1]]
+        
+        word += self.board[currPosition[1]][currPosition[0]]
+
+
         #compute new paths to begin search with first gaining possible moves
-        possible = self.possibleMoves(currPos)
+        possible = self.possibleMoves(currPosition[:])
 
-
+    
         #now compute the legal moves in those direction
-        legal = self.legalMoves(possible, path)
+        legal = self.legalMoves(possible[:], path[:])
 
         #now compute the word that should be formed 
         word = word.lower()
 
         if word in self.dic:
-            
             #check to see if the word is complete and then return after appending
-            if word + "\n" in self.dic:
-                word.strip('\n')
+            if (word + "\n") in self.dic:
                 self.completeWords.append(word)
-                return
-
+           
             #recursive element to begin search in new path
             for next in legal:
-                self.examineState(next, path, word)
+                print("Next: ")
+                print(next)
+                self.examineState(next, path[:], word[:])
         else:
+            print(word + " is not in path")
             return 
 
 
@@ -170,16 +171,24 @@ def main():
 
     #load board and begin the solution
     solve = boggleSolver(dic)
-    myboard = solve.loadBoard('boardex')
+    myboard = solve.loadBoard('fourboard3.txt')
     solve.printBoard(myboard)
 
+    print(solve.n)
+    solve.examineState([2,2], [], "\n")
+    for i in solve.completeWords:
+        print(i)
+
     #begin with empty list 
-    solve.examineState([0,1], [], "\n")
+    for k in range(solve.n):
+        for j in range(solve.n):
+            solve.examineState([j,k], [], "\n")
+            for i in solve.completeWords:
+                print("word: " + i)
 
     end = time.time()
     #print("Time: " + (end-begin) )
-    for i  in solve.completeWords:
-        print(i)
+
 
     
 if __name__ == "__main__":
