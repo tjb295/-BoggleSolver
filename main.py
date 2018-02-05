@@ -120,12 +120,13 @@ class boggleSolver:
         return possMovesArr
 
 
-    def legalMoves(self, possibleMoves, visited):
+    def legalMoves(self, possibleMoves, visited, word):
+        valid = []
         for i in possibleMoves:
-            if i in visited:
-                possibleMoves.remove(i)
+            if i not in visited:
+                valid.append(i)
 
-        return possibleMoves
+        return valid
 
     def examineState(self, currPosition, path, word):
 
@@ -134,6 +135,7 @@ class boggleSolver:
 
         
         word += self.board[currPosition[0]][currPosition[1]]
+        
 
 
         #compute new paths to begin search with first gaining possible moves
@@ -141,21 +143,34 @@ class boggleSolver:
 
     
         #now compute the legal moves in those direction
-        legal = self.legalMoves(possible[:], path[:])
+        legal = self.legalMoves(possible, path, word)
 
         #now compute the word that should be formed 
         word = word.lower()
 
+
         if "\n" + word in self.dic:
             #check to see if the word is complete and then return after appending
             if ("\n" + word + "\n") in self.dic:
-                self.completeWords.append(word[:])
-           
+                if (word ) not in self.completeWords:
+                    self.completeWords.append(word[:])
+        
             #recursive element to begin search in new path
             for next in legal:
-                self.examineState(next[:], path[:], word[:])
+                self.examineState(next[:], path[:], word)
         else:
             return 
+    
+            #check to see if the word is complete and then return after appending
+            if ("\n" + word + "\n") in self.dic:
+                self.completeWords.append(word[:])
+        
+                #recursive element to begin search in new path
+                for next in legal:
+                    self.examineState(next[:], path[:], word[:])
+            else:
+                return 
+
 
 
 
@@ -175,7 +190,7 @@ def main():
     solve.printBoard(myboard)
     print("\n")
 
-
+    solve.cleverness = True
     #begin with empty list 
     print("And we're off!")
     print("Running with cleverness ON")
@@ -194,7 +209,9 @@ def main():
 
     timeResult = end - begin
     print("Searched total of %d moves in %f seconds" % (solve.moves, timeResult))
-
+    print("Found %d words!" % (len(solve.completeWords)))
+    solve.completeWords.sort()
+    print(solve.completeWords)
 
     
 if __name__ == "__main__":
