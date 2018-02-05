@@ -11,6 +11,8 @@ class boggleSolver:
         self.n = 0
         self.completeWords = []
         self.dic = dic
+        self.moves = 0
+        self.cleverness = False
 
     #loads NxN board into matrix
     def loadBoard(self, boardFile):
@@ -127,10 +129,11 @@ class boggleSolver:
 
     def examineState(self, currPosition, path, word):
 
-        path.append(currPosition)
+        self.moves += 1
+        path.append(currPosition[:])
 
         
-        word += self.board[currPosition[1]][currPosition[0]]
+        word += self.board[currPosition[0]][currPosition[1]]
 
 
         #compute new paths to begin search with first gaining possible moves
@@ -143,18 +146,15 @@ class boggleSolver:
         #now compute the word that should be formed 
         word = word.lower()
 
-        if word in self.dic:
+        if "\n" + word in self.dic:
             #check to see if the word is complete and then return after appending
-            if (word + "\n") in self.dic:
-                self.completeWords.append(word)
+            if ("\n" + word + "\n") in self.dic:
+                self.completeWords.append(word[:])
            
             #recursive element to begin search in new path
             for next in legal:
-                print("Next: ")
-                print(next)
-                self.examineState(next, path[:], word[:])
+                self.examineState(next[:], path[:], word[:])
         else:
-            print(word + " is not in path")
             return 
 
 
@@ -173,21 +173,27 @@ def main():
     solve = boggleSolver(dic)
     myboard = solve.loadBoard('fourboard3.txt')
     solve.printBoard(myboard)
+    print("\n")
 
-    print(solve.n)
-    solve.examineState([2,2], [], "\n")
-    for i in solve.completeWords:
-        print(i)
 
     #begin with empty list 
-    for k in range(solve.n):
-        for j in range(solve.n):
-            solve.examineState([j,k], [], "\n")
-            for i in solve.completeWords:
-                print("word: " + i)
+    print("And we're off!")
+    print("Running with cleverness ON")
+    for k in range(solve.n + 1):
+        for j in range(solve.n + 1):
+            solve.examineState([k,j], [], "")
 
     end = time.time()
-    #print("Time: " + (end-begin) )
+    print("All Done!")
+    print("\n")
+
+    #sort out the words
+    for i in solve.completeWords:
+        break
+
+
+    timeResult = end - begin
+    print("Searched total of %d moves in %f seconds" % (solve.moves, timeResult))
 
 
     
