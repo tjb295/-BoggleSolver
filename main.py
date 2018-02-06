@@ -137,7 +137,6 @@ class boggleSolver:
         word += self.board[currPosition[0]][currPosition[1]]
         
 
-
         #compute new paths to begin search with first gaining possible moves
         possible = self.possibleMoves(currPosition[:])
 
@@ -152,7 +151,7 @@ class boggleSolver:
         if "\n" + word in self.dic:
             #check to see if the word is complete and then return after appending
             if ("\n" + word + "\n") in self.dic:
-                if (word ) not in self.completeWords:
+                if word not in self.completeWords:
                     self.completeWords.append(word[:])
         
             #recursive element to begin search in new path
@@ -161,15 +160,7 @@ class boggleSolver:
         else:
             return 
     
-            #check to see if the word is complete and then return after appending
-            if ("\n" + word + "\n") in self.dic:
-                self.completeWords.append(word[:])
-        
-                #recursive element to begin search in new path
-                for next in legal:
-                    self.examineState(next[:], path[:], word[:])
-            else:
-                return 
+            
 
 
 
@@ -186,7 +177,7 @@ def main():
 
     #load board and begin the solution
     solve = boggleSolver(dic)
-    myboard = solve.loadBoard('fourboard3.txt')
+    myboard = solve.loadBoard('fiveboard')
     solve.printBoard(myboard)
     print("\n")
 
@@ -202,15 +193,32 @@ def main():
     print("All Done!")
     print("\n")
 
-    #sort out the words
-    for i in solve.completeWords:
-        break
-
 
     timeResult = end - begin
     print("Searched total of %d moves in %f seconds" % (solve.moves, timeResult))
+    solve.completeWords.sort(key=len)
+    # solve.completeWords.sort()
+    print("Words found: ")
+    printArr = []
+    size = 0
+    for words in range(len(solve.completeWords)):
+        printArr.append(solve.completeWords[words])
+        # print(printArr)
+        # print(words)
+        try:
+            if len(printArr[-1]) != len(solve.completeWords[words+1]):
+                printArr.sort()
+                print("%d %d-letter words: " % (len(printArr), len(printArr[-1])))
+                printArr = []
+        except IndexError:
+            printArr.sort()
+            print("%d %d-letter words: " % (len(printArr), len(printArr[-1])))
+            printArr = []
+
+
+
+
     print("Found %d words!" % (len(solve.completeWords)))
-    solve.completeWords.sort()
     print(solve.completeWords)
 
     
