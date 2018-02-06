@@ -184,7 +184,6 @@ def main():
     solve.cleverness = True
     #begin with empty list 
     print("And we're off!")
-    print("Running with cleverness ON")
     for k in range(solve.n + 1):
         for j in range(solve.n + 1):
             solve.examineState([k,j], [], "")
@@ -208,13 +207,18 @@ def main():
         try:
             if len(printArr[-1]) != len(solve.completeWords[words+1]):
                 printArr.sort()
-                print("%d %d-letter words: " % (len(printArr), len(printArr[-1])))
+                print("%d %d-letter words: " % (len(printArr), len(printArr[-1])), end = "")
+                for i in printArr:
+                    print("%s, " % (i), end =""),
+                print("\n")
                 printArr = []
         except IndexError:
             printArr.sort()
-            print("%d %d-letter words: " % (len(printArr), len(printArr[-1])))
-            printArr = []
-
+            print("%d %d-letter words: " % (len(printArr), len(printArr[-1])), end = "")
+            for i in printArr:
+                print("%s, " % (i), end =""),
+                printArr = []
+    print("\n")
 
 
 
