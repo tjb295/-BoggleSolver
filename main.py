@@ -26,6 +26,7 @@ class boggleSolver:
 
         #for loop to loop through letters, disregards white space
         for letter in range(len(board)):
+            
             #if reached new line, save that dimension within array
             if board[letter] == '\n':
                 self.board.append(temp)
@@ -130,10 +131,11 @@ class boggleSolver:
 
     def examineState(self, currPosition, path, word):
 
+        #hold the number of moves
         self.moves += 1
         path.append(currPosition[:])
-
         
+        #build the word with the new letter in the current position
         word += self.board[currPosition[0]][currPosition[1]]
         
 
@@ -160,13 +162,6 @@ class boggleSolver:
         else:
             return 
     
-            
-
-
-
-
-
-
 
 def main():
     begin = time.time()
@@ -177,7 +172,7 @@ def main():
 
     #load board and begin the solution
     solve = boggleSolver(dic)
-    myboard = solve.loadBoard('fiveboard')
+    myboard = solve.loadBoard('fourboard2.txt')
     solve.printBoard(myboard)
     print("\n")
 
@@ -192,19 +187,19 @@ def main():
     print("All Done!")
     print("\n")
 
-
+    #save the total time
     timeResult = end - begin
     print("Searched total of %d moves in %f seconds" % (solve.moves, timeResult))
     solve.completeWords.sort(key=len)
-    # solve.completeWords.sort()
     print("Words found: ")
+
+    #print array to loop through and hold words of same length
     printArr = []
-    size = 0
     for words in range(len(solve.completeWords)):
         printArr.append(solve.completeWords[words])
-        # print(printArr)
-        # print(words)
         try:
+
+            # if the length differs between indices, print and switch to next round of words
             if len(printArr[-1]) != len(solve.completeWords[words+1]):
                 printArr.sort()
                 print("%d %d-letter words: " % (len(printArr), len(printArr[-1])), end = "")
@@ -212,15 +207,15 @@ def main():
                     print("%s, " % (i), end =""),
                 print("\n")
                 printArr = []
+
         except IndexError:
             printArr.sort()
             print("%d %d-letter words: " % (len(printArr), len(printArr[-1])), end = "")
             for i in printArr:
                 print("%s, " % (i), end =""),
                 printArr = []
+
     print("\n")
-
-
 
     print("Found %d words!" % (len(solve.completeWords)))
     print(solve.completeWords)
